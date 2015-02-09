@@ -3,9 +3,31 @@ apply plugin: "idea"
 apply plugin: 'maven'
 apply plugin: 'signing'
 
+group = 'com.sequenceiq'
+version = '1.06'
+
 repositories {
 	mavenCentral()
 }
+
+configurations {
+    deployerJars
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            configuration = configurations.deployerJars
+            repository(url: "s3://maven.sequenceiq.com/releases") {
+                authentication(userName: "$System.env.AWS_ACCESS_KEY", passphrase: "$System.env.AWS_SECRET_ACCESS_KEY")
+            }
+            snapshotRepository(url: "s3://maven.sequenceiq.com/snapshots") {
+                authentication(userName: "$System.env.AWS_ACCESS_KEY", passphrase: "$System.env.AWS_SECRET_ACCESS_KEY")
+            }
+        }
+    }
+}
+
 
 dependencies {
 	compile "com.google.code.gson:gson:2.3"
@@ -17,6 +39,8 @@ dependencies {
 
 	testCompile "junit:junit:4.11"
 	testCompile "org.hamcrest:hamcrest-core:1.3"
+
+    deployerJars 'org.springframework.build.aws:org.springframework.build.aws.maven:3.0.0.RELEASE'
 }
 
 // --------------------------------------------------------------
