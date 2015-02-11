@@ -72,8 +72,8 @@ public final class ConsulClient implements AclClient, AgentClient, CatalogClient
 	 * @param agentHost Hostname or IP address of consul agent. You can specify scheme (HTTP/HTTPS) in
 	 *                  address. If there is no scheme in address - client will use HTTP.
 	 */
-	public ConsulClient(String agentHost) {
-		this(new ConsulRawClient(agentHost));
+	public ConsulClient(String agentHost, int timeout) {
+		this(new ConsulRawClient(agentHost, timeout));
 	}
 
 	/**
@@ -83,8 +83,8 @@ public final class ConsulClient implements AclClient, AgentClient, CatalogClient
 	 *                  address. If there is no scheme in address - client will use HTTP.
 	 * @param agentPort Consul agent port
 	 */
-	public ConsulClient(String agentHost, int agentPort) {
-		this(new ConsulRawClient(agentHost, agentPort));
+	public ConsulClient(String agentHost, int agentPort, int timeout) {
+		this(new ConsulRawClient(agentHost, agentPort, timeout));
 	}
 
 	@Override

@@ -12,6 +12,8 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.PoolingClientConnectionManager;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
@@ -28,13 +30,15 @@ public final class DefaultHttpTransport implements HttpTransport {
 
 	private final HttpClient httpClient;
 
-	public DefaultHttpTransport() {
-		PoolingClientConnectionManager connectionManager = new PoolingClientConnectionManager();
-		connectionManager.setMaxTotal(1000);
-		connectionManager.setDefaultMaxPerRoute(500);
-
-		this.httpClient = new DefaultHttpClient(connectionManager);
-	}
+    public DefaultHttpTransport(int timeout) {
+        PoolingClientConnectionManager connectionManager = new PoolingClientConnectionManager();
+        connectionManager.setMaxTotal(1000);
+        connectionManager.setDefaultMaxPerRoute(500);
+        HttpParams httpParams = new BasicHttpParams();
+        HttpConnectionParams.setConnectionTimeout(httpParams, timeout);
+        HttpConnectionParams.setSoTimeout(httpParams, timeout);
+        this.httpClient = new DefaultHttpClient(connectionManager, httpParams);
+    }
 
 	public DefaultHttpTransport(HttpClient httpClient) {
 		this.httpClient = httpClient;

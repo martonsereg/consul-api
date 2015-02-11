@@ -4,7 +4,7 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 group = 'com.sequenceiq'
-version = '1.06'
+version = '1.08'
 
 repositories {
 	mavenCentral()

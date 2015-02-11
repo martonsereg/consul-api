@@ -14,9 +14,7 @@ public class ConsulRawClient {
 
 	private static final String DEFAULT_HOST = "localhost";
 	private static final int DEFAULT_PORT = 8500;
-
-	// one real HTTP client for all instances
-	private static final HttpTransport DEFAULT_HTTP_TRANSPORT = new DefaultHttpTransport();
+    private static final int DEFAULT_TIMEOUT = 10000;
 
 	private final HttpTransport httpTransport;
 	private final String agentAddress;
@@ -25,12 +23,20 @@ public class ConsulRawClient {
 		this(DEFAULT_HOST);
 	}
 
-	public ConsulRawClient(String agentHost) {
-		this(agentHost, DEFAULT_PORT);
-	}
+    public ConsulRawClient(int timeout) {
+        this(DEFAULT_HOST, DEFAULT_PORT, DEFAULT_TIMEOUT);
+    }
 
-	public ConsulRawClient(String agentHost, int agentPort) {
-		this(DEFAULT_HTTP_TRANSPORT, agentHost, agentPort);
+    public ConsulRawClient(String agentHost) {
+        this(agentHost, DEFAULT_PORT, DEFAULT_TIMEOUT);
+    }
+
+    public ConsulRawClient(String agentHost, int timeout) {
+        this(agentHost, DEFAULT_PORT, timeout);
+    }
+
+	public ConsulRawClient(String agentHost, int agentPort, int timeout) {
+		this(new DefaultHttpTransport(timeout), agentHost, agentPort);
 	}
 
 	public ConsulRawClient(HttpClient httpClient) {
