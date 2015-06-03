@@ -1,5 +1,8 @@
 package com.ecwid.consul.v1;
 
+import java.util.List;
+import java.util.Map;
+
 import com.ecwid.consul.v1.acl.AclClient;
 import com.ecwid.consul.v1.acl.AclConsulClient;
 import com.ecwid.consul.v1.acl.model.Acl;
@@ -7,10 +10,18 @@ import com.ecwid.consul.v1.acl.model.NewAcl;
 import com.ecwid.consul.v1.acl.model.UpdateAcl;
 import com.ecwid.consul.v1.agent.AgentClient;
 import com.ecwid.consul.v1.agent.AgentConsulClient;
-import com.ecwid.consul.v1.agent.model.*;
+import com.ecwid.consul.v1.agent.model.Member;
+import com.ecwid.consul.v1.agent.model.NewCheck;
+import com.ecwid.consul.v1.agent.model.NewService;
+import com.ecwid.consul.v1.agent.model.Self;
+import com.ecwid.consul.v1.agent.model.Service;
 import com.ecwid.consul.v1.catalog.CatalogClient;
 import com.ecwid.consul.v1.catalog.CatalogConsulClient;
-import com.ecwid.consul.v1.catalog.model.*;
+import com.ecwid.consul.v1.catalog.model.CatalogDeregistration;
+import com.ecwid.consul.v1.catalog.model.CatalogNode;
+import com.ecwid.consul.v1.catalog.model.CatalogRegistration;
+import com.ecwid.consul.v1.catalog.model.CatalogService;
+import com.ecwid.consul.v1.catalog.model.Node;
 import com.ecwid.consul.v1.event.EventClient;
 import com.ecwid.consul.v1.event.EventConsulClient;
 import com.ecwid.consul.v1.event.model.Event;
@@ -30,9 +41,6 @@ import com.ecwid.consul.v1.session.model.NewSession;
 import com.ecwid.consul.v1.session.model.Session;
 import com.ecwid.consul.v1.status.StatusClient;
 import com.ecwid.consul.v1.status.StatusConsulClient;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Vasily Vasilkov (vgv@ecwid.com)
@@ -85,6 +93,20 @@ public final class ConsulClient implements AclClient, AgentClient, CatalogClient
 	 */
 	public ConsulClient(String agentHost, int agentPort, int timeout) {
 		this(new ConsulRawClient(agentHost, agentPort, timeout));
+	}
+
+	/**
+	 * Connect to consul agent on specific address and port through TLS
+	 *
+	 * @param agentHost Hostname or IP address of consul agent. You can specify scheme (HTTP/HTTPS) in
+	 *                  address. If there is no scheme in address - client will use HTTP.
+	 * @param agentPort Consul agent port
+	 * @param clientCertPath path to a .pem file holding the client's certificate
+	 * @param clientKeyPath path to a .pem file holding the client's private key
+	 * @param serverCertPath path to a .pem file holding the server's certificate
+	 */
+	public ConsulClient(String agentHost, int agentPort, String clientCertPath, String clientKeyPath, String serverCertPath, int timeout) {
+		this(new ConsulRawClient(agentHost, agentPort, clientCertPath, clientKeyPath, serverCertPath, timeout));
 	}
 
 	@Override

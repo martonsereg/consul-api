@@ -4,7 +4,7 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 group = 'com.sequenceiq'
-version = '1.08'
+version = '1.10'
 
 repositories {
 	mavenCentral()
@@ -32,8 +32,9 @@ uploadArchives {
 dependencies {
 	compile "com.google.code.gson:gson:2.3"
 
-	compile "org.apache.httpcomponents:httpcore:4.2.5"
-	compile "org.apache.httpcomponents:httpclient:4.2.5"
+	compile "org.apache.httpcomponents:httpcore:4.3.1"
+	compile "org.apache.httpcomponents:httpclient:4.3.1"
+	compile "org.bouncycastle:bcpkix-jdk15on:1.51"
 
 	compile "commons-logging:commons-logging:1.1"
 

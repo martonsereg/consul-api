@@ -1,11 +1,18 @@
 package com.ecwid.consul.v1;
 
+import java.security.KeyStore;
+import java.security.NoSuchAlgorithmException;
+
+import javax.net.ssl.SSLContext;
+
+import org.apache.http.client.HttpClient;
+import org.apache.http.conn.ssl.SSLContexts;
+
 import com.ecwid.consul.UrlParameters;
 import com.ecwid.consul.Utils;
 import com.ecwid.consul.transport.DefaultHttpTransport;
 import com.ecwid.consul.transport.HttpTransport;
 import com.ecwid.consul.transport.RawResponse;
-import org.apache.http.client.HttpClient;
 
 /**
  * @author Vasily Vasilkov (vgv@ecwid.com)
@@ -38,6 +45,12 @@ public class ConsulRawClient {
 	public ConsulRawClient(String agentHost, int agentPort, int timeout) {
 		this(new DefaultHttpTransport(timeout), agentHost, agentPort);
 	}
+
+	public ConsulRawClient(String agentHost, int agentPort, String clientCertPath, String clientKeyPath, String serverCertPath, int timeout) {
+		this(new DefaultHttpTransport(timeout, clientCertPath, clientKeyPath, serverCertPath), agentHost, agentPort);
+	}
+
+
 
 	public ConsulRawClient(HttpClient httpClient) {
 		this(DEFAULT_HOST, httpClient);
